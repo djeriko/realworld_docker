@@ -2,5 +2,10 @@ version: '3'
 
 services: 
   api:
+    # Build from /api Dockerfile
     build: ./api
-    
+    # Run script to start server
+    command: npm run start 
+    ports: 
+      # port of host/container
+      - "3000:3000"

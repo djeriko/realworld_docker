@@ -1,5 +1,5 @@
 # Use that docker image as source
-FROM node:13
+FROM node:13.12.0-alpine
 
 # Create dir inside docker container
 WORKDIR /usr/src/app
@@ -12,4 +12,3 @@ RUN npm install
 
 # Copy all file to docker container (without files in .dockerignore)
 COPY . . 
-
