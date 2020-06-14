@@ -9,6 +9,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Yo. Change with Docker. Edit <code>src/App.js</code> and save to reload.
+          We are in dev mode
         </p>
         <a
           className="App-link"
