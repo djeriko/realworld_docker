@@ -6,6 +6,10 @@ services:
     build: ./api
     # Run script to start server
     command: npm run start 
+    restart: unless-stopped
     ports: 
       # port of host/container
       - "3000:3000"
+    environment: 
+      - PORT=3000
+      - HOST=http://realworld-docker.com

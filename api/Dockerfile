@@ -12,3 +12,4 @@ RUN npm install
 
 # Copy all file to docker container (without files in .dockerignore)
 COPY . . 
+
