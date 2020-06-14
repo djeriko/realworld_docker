@@ -26,7 +26,7 @@ const startServer = () => {
     // Add to db
     silence.save(function(err, savedPosts) {
       if (err) return console.error(err)
-      console.log('savedSilence', savedPosts)
+      console.log('savedSilence with volumes', savedPosts)
     })
   })
   
