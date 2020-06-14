@@ -1,12 +1,13 @@
 const express = require("express")
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
+const axios = require("axios")
 const { connectDb } = require("./helpers/db")
-const { host, port, db } = require("./configuration")
+const { host, port, db, authApiUrl } = require("./configuration")
 const app = express()
 
 // Create mongoose schema
 const postSchema = new mongoose.Schema({
-  name: String
+  name: String,
 })
 const Post = mongoose.model("Post", postSchema)
 
@@ -16,21 +17,29 @@ const startServer = () => {
     console.log(`On host ${host}`)
     console.log(`Our database ${db}`)
 
-    Post.find(function(err, posts) {
+    Post.find(function (err, posts) {
       if (err) return console.error(err)
-      console.log('posts', posts)
+      console.log("posts", posts)
     })
 
     // Create instance of schema
-    const silence = new Post ({name: "Silence"})
+    const silence = new Post({ name: "Silence" })
     // Add to db
-    silence.save(function(err, savedPosts) {
+    silence.save(function (err, savedPosts) {
       if (err) return console.error(err)
-      console.log('savedSilence with volumes', savedPosts)
+      console.log("savedSilence with volumes", savedPosts)
     })
   })
-  
 }
+
+app.get("/testwithcurrentuser", (req, res) => {
+  axios.get(authApiUrl + "/currentUser").then((response) => {
+    res.json({
+      testwithcurrentuser: true,
+      currentUserFromAuth: response.data
+    })
+  })
+})
 
 app.get("/test", (req, res) => {
   res.send("Our api sercer is working correctly")
