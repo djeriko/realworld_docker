@@ -1,15 +1,28 @@
 version: "3"
 
 services:
+  frontend:
+    build: ./frontend
+    container_name: realworld-docker-fronend
+    command: npm run start
+    ports: 
+      - "3000:3000"
+    restart: unless-stopped
+    stdin_open: true 
+    tty: true
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+    
   api:
     # Build from /api Dockerfile
     build: ./api
+    container_name: realworld-docker-api
     # Run script to start server
     command: npm run start
     restart: unless-stopped
     ports:
       # port of host/container
-      - "3000:3000"
+      - "3001:3001"
     environment:
       - PORT=3000
       - HOST=http://realworld-docker.com
@@ -18,10 +31,32 @@ services:
     depends_on:
       - api_db
 
+  auth:
+    build: ./auth
+    container_name: realworld-docker-auth
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3001
+      - HOST=http://realworld-docker.com
+      - MONGO_URL=mongodb://auth_db:27017/auth
+    depends_on:
+      - auth_db
+
   api_db:
     image: mongo:latest
-    volumes: 
+    container_name: realworld-docker-db
+    volumes:
       - mongodb_api:/data/db
+
+  auth_db:
+    image: mongo:latest
+    container_name: realworld-docker-auth-db
+    volumes:
+      - mongodb_auth:/data/db
 
 volumes:
   mongodb_api:
+  mongodb_auth:
